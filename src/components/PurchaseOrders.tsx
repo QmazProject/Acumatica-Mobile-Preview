@@ -177,7 +177,7 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
             {/* Purchase Orders List */}
             <div style={{ 
                 paddingTop: '200px',
-                backgroundColor: '#f5f5f5',
+                backgroundColor: '#fff',
                 minHeight: '100vh'
             }}>
                 {purchaseOrders.map((order) => (
@@ -186,7 +186,6 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                         style={{
                             backgroundColor: '#fff',
                             padding: '16px',
-                            marginBottom: '8px',
                             cursor: 'pointer',
                             borderBottom: '1px solid #e5e5e5'
                         }}

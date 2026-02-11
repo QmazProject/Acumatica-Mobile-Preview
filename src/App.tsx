@@ -68,6 +68,53 @@ function App() {
     getStoredState('notificationPermissionGranted', false)
   );
 
+  // Check URL parameters on initial load (for notification navigation)
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    const typeParam = urlParams.get('type');
+    
+    console.log('URL params on load:', { view: viewParam, type: typeParam });
+    
+    if (viewParam === 'approvals') {
+      // Enable approvals if not already enabled
+      if (!isApprovalsVisible) {
+        setIsApprovalsVisible(true);
+      }
+      
+      // Set the approval type based on URL parameter
+      if (typeParam === 'po') {
+        setApprovalType('po');
+        if (poStatus !== 'pending') {
+          setPoStatus('pending');
+        }
+      } else if (typeParam === 'bill') {
+        setApprovalType('bill');
+        if (billStatus !== 'pending') {
+          setBillStatus('pending');
+        }
+      } else if (typeParam === 'prepayment') {
+        setApprovalType('prepayment');
+        if (prepaymentStatus !== 'pending') {
+          setPrepaymentStatus('pending');
+        }
+      }
+      
+      setView('approvals');
+      
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (viewParam === 'purchases') {
+      if (!isPurchasesEnabled) {
+        setIsPurchasesEnabled(true);
+      }
+      setView('purchases');
+      
+      // Clean up URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []); // Run only once on mount
+
   // Request notification permission on first load
   useEffect(() => {
     const requestNotificationPermission = async () => {

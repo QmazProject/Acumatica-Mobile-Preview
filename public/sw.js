@@ -36,8 +36,8 @@ self.addEventListener('notificationclick', (event) => {
   // Determine the URL based on notification type
   let targetUrl = '/';
   if (notificationType === 'po' || notificationType === 'bill' || notificationType === 'prepayment') {
-    // Navigate to approvals screen
-    targetUrl = '/?view=approvals';
+    // Navigate to approvals screen with type parameter
+    targetUrl = `/?view=approvals&type=${notificationType}`;
   } else if (notificationType === 'purchases') {
     // Navigate to purchases screen
     targetUrl = '/?view=purchases';

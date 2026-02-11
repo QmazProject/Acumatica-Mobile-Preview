@@ -84,6 +84,40 @@ function App() {
     return () => clearTimeout(timer);
   }, [notificationPermissionGranted]);
 
+  // Listen for navigation messages from service worker
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      const handleMessage = (event: MessageEvent) => {
+        console.log('App received message from service worker:', event.data);
+        
+        if (event.data && event.data.type === 'NAVIGATE') {
+          const { view, notificationType } = event.data;
+          
+          // Navigate to the appropriate view
+          if (view === 'approvals') {
+            // Set the approval type based on notification
+            if (notificationType === 'po') {
+              setApprovalType('po');
+            } else if (notificationType === 'bill') {
+              setApprovalType('bill');
+            } else if (notificationType === 'prepayment') {
+              setApprovalType('prepayment');
+            }
+            setView('approvals');
+          } else if (view === 'purchases') {
+            setView('purchases');
+          }
+        }
+      };
+
+      navigator.serviceWorker.addEventListener('message', handleMessage);
+      
+      return () => {
+        navigator.serviceWorker.removeEventListener('message', handleMessage);
+      };
+    }
+  }, []);
+
   // Persist state changes to localStorage
   useEffect(() => {
     setStoredState('appView', view);

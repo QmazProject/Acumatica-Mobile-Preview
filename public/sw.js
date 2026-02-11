@@ -29,18 +29,40 @@ self.addEventListener('notificationclick', (event) => {
   
   event.notification.close();
 
+  // Get the notification data to determine where to navigate
+  const notificationData = event.notification.data || {};
+  const notificationType = notificationData.type; // 'po', 'bill', 'prepayment', 'purchases'
+  
+  // Determine the URL based on notification type
+  let targetUrl = '/';
+  if (notificationType === 'po' || notificationType === 'bill' || notificationType === 'prepayment') {
+    // Navigate to approvals screen
+    targetUrl = '/?view=approvals';
+  } else if (notificationType === 'purchases') {
+    // Navigate to purchases screen
+    targetUrl = '/?view=purchases';
+  }
+
+  console.log('Navigating to:', targetUrl, 'for type:', notificationType);
+
   // Open the app when notification is clicked
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // If app is already open, focus it
+      // If app is already open, focus it and navigate
       for (const client of clientList) {
         if (client.url.includes(self.location.origin) && 'focus' in client) {
+          // Send message to the client to navigate to the correct view
+          client.postMessage({
+            type: 'NAVIGATE',
+            view: notificationType === 'purchases' ? 'purchases' : 'approvals',
+            notificationType: notificationType
+          });
           return client.focus();
         }
       }
-      // Otherwise, open a new window
+      // Otherwise, open a new window with the target URL
       if (clients.openWindow) {
-        return clients.openWindow('/');
+        return clients.openWindow(targetUrl);
       }
     })
   );

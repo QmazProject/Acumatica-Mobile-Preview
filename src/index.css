@@ -1,0 +1,64 @@
+:root {
+  --bg-color: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --accent-color: #fca5a5;
+  /* Light pink/red */
+  --accent-light: #fee2e2;
+  --primary-red: #ef4444;
+  --border-color: #e5e5e5;
+  --card-bg: #f5f5f5;
+  /* Light grey for inputs/cards */
+  --highlight-bg: #f9dcdc;
+  /* Pinkish background for favorites */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari/Opera */
+}
+
+#root {
+  width: 100%;
+  max-width: 480px;
+  /* Mobile width simulation */
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  background-color: #ffffff;
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  padding-bottom: 80px;
+  /* Space for bottom nav */
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,0 +1,220 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 16px 16px 8px 16px;
+    /* Top padding, less bottom */
+    z-index: 50;
+    /* Removed border-bottom as requested */
+}
+
+.sub-header {
+    background-color: #fff;
+    padding: 0 16px 16px 16px;
+    /* Bottom padding only */
+    /* Removed border-bottom as requested */
+}
+
+.company-name {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.dashboard-content {
+    padding: 16px;
+}
+
+.kpi-banner {
+    margin-bottom: 20px;
+}
+
+.add-kpi-btn {
+    width: 100%;
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a1a1a;
+    text-align: center;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    margin-top: 24px;
+}
+
+.section-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #888;
+}
+
+.icon-more {
+    color: #888;
+}
+
+/* Recently Visited */
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+}
+
+.recent-card {
+    min-width: 160px;
+    background-color: #e5e5e5;
+    border-radius: 16px;
+    padding: 12px;
+    flex-shrink: 0;
+}
+
+.card-label {
+    font-size: 11px;
+    color: #666;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.card-title {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* Edit Main Screen Footer */
+.edit-main-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px 0 24px;
+    color: #999;
+    /* Grey text */
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.edit-main-screen .icon-settings {
+    color: #d1d5db;
+    /* Lighter grey/pinkish for icon */
+    width: 28px;
+    height: 28px;
+    stroke-width: 2.5px;
+}
+
+.edit-main-screen span {
+    color: #9ca3af;
+}
+
+/* Functions Screen */
+.function-tab {
+    width: 100%;
+    padding: 16px;
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.function-tab:active {
+    background-color: #f9fafb;
+}
+
+/* Favorites */
+.favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.favorite-item {
+    background-color: var(--highlight-bg);
+    /* Use the pinkish color */
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a1a1a;
+    width: 100%;
+    /* Ensure full width */
+}
+
+.favorite-item-clickable {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.favorites-badge {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 11px;
+    background-color: var(--primary-red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 7px;
+}
+
+
+/* Workspaces */
+.workspace-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.workspace-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.workspace-icon {
+    margin-top: 2px;
+}
+
+.workspace-details h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: #000;
+}
+
+.workspace-details p {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.3;
+}

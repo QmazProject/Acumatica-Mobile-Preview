@@ -84,6 +84,19 @@ const Functions: React.FC<{
                     >
                         Prepayment Approval
                     </button>
+                    <button
+                        className="function-tab"
+                        type="button"
+                        style={{ 
+                            marginTop: '8px',
+                            cursor: 'pointer'
+                        }}
+                        onClick={() => {
+                            alert('Enabled Purchases for PO functionality');
+                        }}
+                    >
+                        Enabled Purchases for PO
+                    </button>
                     {activeModal === 'prepayment' && (
                         <div style={{
                             position: 'absolute',

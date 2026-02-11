@@ -7,7 +7,7 @@ interface PurchaseOrdersProps {
 }
 
 const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
-    const [activeFilter, setActiveFilter] = React.useState<'all' | 'my' | 'adc'>('all');
+    const [activeFilter, setActiveFilter] = React.useState<'all' | 'my' | 'adc' | 'qdc' | 'qmb'>('all');
 
     const purchaseOrders = [
         {
@@ -95,13 +95,17 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                     </div>
                 </div>
 
-                {/* Filter Buttons */}
+                {/* Filter Buttons - Swipable */}
                 <div style={{ 
                     display: 'flex', 
                     gap: '8px', 
                     padding: '16px',
                     backgroundColor: '#f5f5f5',
-                    overflowX: 'auto'
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none'
                 }}>
                     <button
                         onClick={() => setActiveFilter('all')}
@@ -116,7 +120,8 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                             whiteSpace: 'nowrap',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            flexShrink: 0
                         }}
                     >
                         <span style={{ fontSize: '16px' }}>☰</span> All
@@ -134,7 +139,8 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                             whiteSpace: 'nowrap',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            flexShrink: 0
                         }}
                     >
                         <span style={{ fontSize: '16px' }}>☰</span> My Purchase Orders
@@ -152,10 +158,49 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                             whiteSpace: 'nowrap',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '6px'
+                            gap: '6px',
+                            flexShrink: 0
                         }}
                     >
                         <span style={{ fontSize: '16px' }}>☰</span> ADC
+                    </button>
+                    <button
+                        onClick={() => setActiveFilter('qdc')}
+                        style={{
+                            padding: '8px 16px',
+                            borderRadius: '20px',
+                            border: '1px solid #e5e5e5',
+                            backgroundColor: activeFilter === 'qdc' ? '#e3f2fd' : '#fff',
+                            color: '#000',
+                            fontSize: '14px',
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            flexShrink: 0
+                        }}
+                    >
+                        <span style={{ fontSize: '16px' }}>☰</span> QDC
+                    </button>
+                    <button
+                        onClick={() => setActiveFilter('qmb')}
+                        style={{
+                            padding: '8px 16px',
+                            borderRadius: '20px',
+                            border: '1px solid #e5e5e5',
+                            backgroundColor: activeFilter === 'qmb' ? '#e3f2fd' : '#fff',
+                            color: '#000',
+                            fontSize: '14px',
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            flexShrink: 0
+                        }}
+                    >
+                        <span style={{ fontSize: '16px' }}>☰</span> QMB
                     </button>
                 </div>
 

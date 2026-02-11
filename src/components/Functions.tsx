@@ -3,13 +3,13 @@ import './Dashboard.css'; // Re-using basic layout styles
 
 const Functions: React.FC<{
     onNavigate: (screen: string) => void;
-    onEnableApprovals: () => void;
-    onEnableBillApprovals: () => void;
-    onEnablePrepaymentApprovals: () => void;
+    onEnableApprovals: () => void | Promise<void>;
+    onEnableBillApprovals: () => void | Promise<void>;
+    onEnablePrepaymentApprovals: () => void | Promise<void>;
     onDisableBillApprovals: () => void;
     onDisablePrepaymentApprovals: () => void;
     onDisableApprovals: () => void;
-    onEnablePurchases: () => void;
+    onEnablePurchases: () => void | Promise<void>;
     onDisablePurchases: () => void;
     isApprovalsEnabled: boolean;
     isBillApprovalsEnabled: boolean;

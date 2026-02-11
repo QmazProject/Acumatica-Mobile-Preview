@@ -8,6 +8,7 @@ import Purchases from './components/Purchases';
 import PurchaseOrders from './components/PurchaseOrders';
 import InstallPrompt from './components/InstallPrompt';
 import { Search, Star, User } from 'lucide-react';
+import { notificationService } from './services/notificationService';
 
 type AttachmentFile = { name: string; size: string; date: string; type: string; previewUrl?: string };
 
@@ -63,6 +64,25 @@ function App() {
   const [prepaymentAttachments, setPrepaymentAttachments] = useState<AttachmentFile[]>(() => 
     getStoredState('prepaymentAttachments', [])
   );
+  const [notificationPermissionGranted, setNotificationPermissionGranted] = useState(() => 
+    getStoredState('notificationPermissionGranted', false)
+  );
+
+  // Request notification permission on first load
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      if (!notificationPermissionGranted) {
+        const granted = await notificationService.requestPermission();
+        if (granted) {
+          setNotificationPermissionGranted(true);
+        }
+      }
+    };
+    
+    // Request permission after a short delay to not interrupt initial load
+    const timer = setTimeout(requestNotificationPermission, 2000);
+    return () => clearTimeout(timer);
+  }, [notificationPermissionGranted]);
 
   // Persist state changes to localStorage
   useEffect(() => {
@@ -109,6 +129,10 @@ function App() {
     setStoredState('isPurchasesEnabled', isPurchasesEnabled);
   }, [isPurchasesEnabled]);
 
+  useEffect(() => {
+    setStoredState('notificationPermissionGranted', notificationPermissionGranted);
+  }, [notificationPermissionGranted]);
+
   const getPendingApprovalsCount = () => {
     if (!isApprovalsVisible) return 0;
     
@@ -137,21 +161,36 @@ function App() {
       {view === 'functions' && (
         <Functions
           onNavigate={(screen) => setView(screen as any)}
-          onEnableApprovals={() => {
+          onEnableApprovals={async () => {
             setIsApprovalsVisible(true);
             setApprovalType('po');
             setPoStatus('pending');
             setPoAttachments([]);
+            
+            // Send notification
+            if (notificationPermissionGranted) {
+              await notificationService.notifyPOApproval();
+            }
           }}
-          onEnableBillApprovals={() => {
+          onEnableBillApprovals={async () => {
             setIsApprovalsVisible(true);
             setApprovalType('bill');
             setBillStatus('pending');
+            
+            // Send notification
+            if (notificationPermissionGranted) {
+              await notificationService.notifyBillApproval();
+            }
           }}
-          onEnablePrepaymentApprovals={() => {
+          onEnablePrepaymentApprovals={async () => {
             setIsApprovalsVisible(true);
             setApprovalType('prepayment');
             setPrepaymentStatus('pending');
+            
+            // Send notification
+            if (notificationPermissionGranted) {
+              await notificationService.notifyPrepaymentApproval();
+            }
           }}
           onDisableApprovals={() => setIsApprovalsVisible(false)}
           onDisableBillApprovals={() => {
@@ -162,7 +201,14 @@ function App() {
             setIsApprovalsVisible(false);
             setApprovalType('po');
           }}
-          onEnablePurchases={() => setIsPurchasesEnabled(true)}
+          onEnablePurchases={async () => {
+            setIsPurchasesEnabled(true);
+            
+            // Send notification
+            if (notificationPermissionGranted) {
+              await notificationService.notifyPurchases();
+            }
+          }}
           onDisablePurchases={() => setIsPurchasesEnabled(false)}
           isApprovalsEnabled={isApprovalsVisible && approvalType === 'po'}
           isBillApprovalsEnabled={isApprovalsVisible && approvalType === 'bill'}

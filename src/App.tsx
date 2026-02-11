@@ -167,30 +167,48 @@ function App() {
             setPoStatus('pending');
             setPoAttachments([]);
             
-            // Send notification
-            if (notificationPermissionGranted) {
-              await notificationService.notifyPOApproval();
+            // Request permission if not granted, then send notification
+            if (!notificationPermissionGranted) {
+              const granted = await notificationService.requestPermission();
+              if (granted) {
+                setNotificationPermissionGranted(true);
+              }
             }
+            
+            // Send notification (will check permission internally)
+            await notificationService.notifyPOApproval();
           }}
           onEnableBillApprovals={async () => {
             setIsApprovalsVisible(true);
             setApprovalType('bill');
             setBillStatus('pending');
             
-            // Send notification
-            if (notificationPermissionGranted) {
-              await notificationService.notifyBillApproval();
+            // Request permission if not granted, then send notification
+            if (!notificationPermissionGranted) {
+              const granted = await notificationService.requestPermission();
+              if (granted) {
+                setNotificationPermissionGranted(true);
+              }
             }
+            
+            // Send notification (will check permission internally)
+            await notificationService.notifyBillApproval();
           }}
           onEnablePrepaymentApprovals={async () => {
             setIsApprovalsVisible(true);
             setApprovalType('prepayment');
             setPrepaymentStatus('pending');
             
-            // Send notification
-            if (notificationPermissionGranted) {
-              await notificationService.notifyPrepaymentApproval();
+            // Request permission if not granted, then send notification
+            if (!notificationPermissionGranted) {
+              const granted = await notificationService.requestPermission();
+              if (granted) {
+                setNotificationPermissionGranted(true);
+              }
             }
+            
+            // Send notification (will check permission internally)
+            await notificationService.notifyPrepaymentApproval();
           }}
           onDisableApprovals={() => setIsApprovalsVisible(false)}
           onDisableBillApprovals={() => {
@@ -204,10 +222,16 @@ function App() {
           onEnablePurchases={async () => {
             setIsPurchasesEnabled(true);
             
-            // Send notification
-            if (notificationPermissionGranted) {
-              await notificationService.notifyPurchases();
+            // Request permission if not granted, then send notification
+            if (!notificationPermissionGranted) {
+              const granted = await notificationService.requestPermission();
+              if (granted) {
+                setNotificationPermissionGranted(true);
+              }
             }
+            
+            // Send notification (will check permission internally)
+            await notificationService.notifyPurchases();
           }}
           onDisablePurchases={() => setIsPurchasesEnabled(false)}
           isApprovalsEnabled={isApprovalsVisible && approvalType === 'po'}

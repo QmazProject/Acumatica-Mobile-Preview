@@ -26,6 +26,7 @@ self.addEventListener('push', (event) => {
 // Listen for notification click events
 self.addEventListener('notificationclick', (event) => {
   console.log('Notification clicked:', event);
+  console.log('Notification data:', event.notification.data);
   
   event.notification.close();
 
@@ -33,37 +34,66 @@ self.addEventListener('notificationclick', (event) => {
   const notificationData = event.notification.data || {};
   const notificationType = notificationData.type; // 'po', 'bill', 'prepayment', 'purchases'
   
-  // Determine the URL based on notification type
-  let targetUrl = '/';
+  console.log('Notification type:', notificationType);
+  
+  // Determine the URL based on notification type - use full URL with origin
+  const origin = self.location.origin;
+  let targetUrl = origin + '/';
+  
   if (notificationType === 'po' || notificationType === 'bill' || notificationType === 'prepayment') {
     // Navigate to approvals screen with type parameter
-    targetUrl = `/?view=approvals&type=${notificationType}`;
+    targetUrl = `${origin}/?view=approvals&type=${notificationType}`;
   } else if (notificationType === 'purchases') {
     // Navigate to purchases screen
-    targetUrl = '/?view=purchases';
+    targetUrl = `${origin}/?view=purchases`;
   }
 
-  console.log('Navigating to:', targetUrl, 'for type:', notificationType);
+  console.log('Target URL:', targetUrl);
 
   // Open the app when notification is clicked
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // If app is already open, focus it and navigate
+    clients.matchAll({ 
+      type: 'window', 
+      includeUncontrolled: true 
+    }).then((clientList) => {
+      console.log('Found clients:', clientList.length);
+      
+      // Check if any window is already open
       for (const client of clientList) {
-        if (client.url.includes(self.location.origin) && 'focus' in client) {
-          // Send message to the client to navigate to the correct view
-          client.postMessage({
-            type: 'NAVIGATE',
-            view: notificationType === 'purchases' ? 'purchases' : 'approvals',
-            notificationType: notificationType
+        console.log('Client URL:', client.url);
+        
+        if (client.url.startsWith(origin)) {
+          console.log('Found existing client, navigating...');
+          
+          // Navigate the existing client to the target URL
+          return client.navigate(targetUrl).then(() => {
+            console.log('Navigation successful, focusing client');
+            return client.focus();
+          }).catch((error) => {
+            console.error('Navigation failed:', error);
+            // If navigation fails, try postMessage as fallback
+            client.postMessage({
+              type: 'NAVIGATE',
+              view: notificationType === 'purchases' ? 'purchases' : 'approvals',
+              notificationType: notificationType
+            });
+            return client.focus();
           });
-          return client.focus();
         }
       }
-      // Otherwise, open a new window with the target URL
+      
+      // No existing client found, open a new window
+      console.log('No existing client, opening new window');
       if (clients.openWindow) {
-        return clients.openWindow(targetUrl);
+        return clients.openWindow(targetUrl).then((client) => {
+          console.log('New window opened:', client);
+          return client;
+        }).catch((error) => {
+          console.error('Failed to open window:', error);
+        });
       }
+    }).catch((error) => {
+      console.error('Error in notificationclick handler:', error);
     })
   );
 });

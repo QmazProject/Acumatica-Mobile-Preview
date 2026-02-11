@@ -70,48 +70,67 @@ function App() {
 
   // Check URL parameters on initial load (for notification navigation)
   useEffect(() => {
+    console.log('App mounted, checking URL parameters...');
+    console.log('Current URL:', window.location.href);
+    console.log('Search params:', window.location.search);
+    
     const urlParams = new URLSearchParams(window.location.search);
     const viewParam = urlParams.get('view');
     const typeParam = urlParams.get('type');
     
-    console.log('URL params on load:', { view: viewParam, type: typeParam });
+    console.log('Parsed URL params:', { view: viewParam, type: typeParam });
     
     if (viewParam === 'approvals') {
+      console.log('Navigating to approvals with type:', typeParam);
+      
       // Enable approvals if not already enabled
       if (!isApprovalsVisible) {
+        console.log('Enabling approvals visibility');
         setIsApprovalsVisible(true);
       }
       
       // Set the approval type based on URL parameter
       if (typeParam === 'po') {
+        console.log('Setting approval type to PO');
         setApprovalType('po');
         if (poStatus !== 'pending') {
           setPoStatus('pending');
         }
       } else if (typeParam === 'bill') {
+        console.log('Setting approval type to Bill');
         setApprovalType('bill');
         if (billStatus !== 'pending') {
           setBillStatus('pending');
         }
       } else if (typeParam === 'prepayment') {
+        console.log('Setting approval type to Prepayment');
         setApprovalType('prepayment');
         if (prepaymentStatus !== 'pending') {
           setPrepaymentStatus('pending');
         }
       }
       
+      console.log('Setting view to approvals');
       setView('approvals');
       
-      // Clean up URL
-      window.history.replaceState({}, '', window.location.pathname);
+      // Clean up URL after a short delay to ensure navigation completes
+      setTimeout(() => {
+        console.log('Cleaning up URL');
+        window.history.replaceState({}, '', window.location.pathname);
+      }, 100);
     } else if (viewParam === 'purchases') {
+      console.log('Navigating to purchases');
       if (!isPurchasesEnabled) {
         setIsPurchasesEnabled(true);
       }
       setView('purchases');
       
       // Clean up URL
-      window.history.replaceState({}, '', window.location.pathname);
+      setTimeout(() => {
+        window.history.replaceState({}, '', window.location.pathname);
+      }, 100);
+    } else {
+      console.log('No navigation parameters found, staying on current view');
     }
   }, []); // Run only once on mount
 

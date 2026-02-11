@@ -4,6 +4,7 @@ import Functions from './components/Functions';
 import Approvals from './components/ApprovalsComponent';
 import PurchaseOrderDetails from './components/PurchaseOrderDetails';
 import BillDetails from './components/BillDetails';
+import Purchases from './components/Purchases';
 import InstallPrompt from './components/InstallPrompt';
 import { Search, Star, User } from 'lucide-react';
 
@@ -28,11 +29,14 @@ const setStoredState = <T,>(key: string, value: T) => {
 };
 
 function App() {
-  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails'>(() => 
+  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails' | 'purchases'>(() => 
     getStoredState('appView', 'dashboard')
   );
   const [isApprovalsVisible, setIsApprovalsVisible] = useState(() => 
     getStoredState('isApprovalsVisible', false)
+  );
+  const [isPurchasesEnabled, setIsPurchasesEnabled] = useState(() => 
+    getStoredState('isPurchasesEnabled', false)
   );
   const [approvalType, setApprovalType] = useState<'po' | 'bill' | 'prepayment'>(() => 
     getStoredState('approvalType', 'po')
@@ -100,6 +104,10 @@ function App() {
     setStoredState('prepaymentAttachments', prepaymentAttachments);
   }, [prepaymentAttachments]);
 
+  useEffect(() => {
+    setStoredState('isPurchasesEnabled', isPurchasesEnabled);
+  }, [isPurchasesEnabled]);
+
   const getPendingApprovalsCount = () => {
     if (!isApprovalsVisible) return 0;
     
@@ -122,6 +130,7 @@ function App() {
           onNavigate={(screen) => setView(screen as any)}
           showApprovals={isApprovalsVisible}
           approvalsCount={getPendingApprovalsCount()}
+          isPurchasesEnabled={isPurchasesEnabled}
         />
       )}
       {view === 'functions' && (
@@ -152,9 +161,12 @@ function App() {
             setIsApprovalsVisible(false);
             setApprovalType('po');
           }}
+          onEnablePurchases={() => setIsPurchasesEnabled(true)}
+          onDisablePurchases={() => setIsPurchasesEnabled(false)}
           isApprovalsEnabled={isApprovalsVisible && approvalType === 'po'}
           isBillApprovalsEnabled={isApprovalsVisible && approvalType === 'bill'}
           isPrepaymentApprovalsEnabled={isApprovalsVisible && approvalType === 'prepayment'}
+          isPurchasesEnabled={isPurchasesEnabled}
         />
       )}
       {view === 'approvals' && (
@@ -233,10 +245,15 @@ function App() {
           }}
         />
       )}
+      {view === 'purchases' && (
+        <Purchases
+          onBack={() => setView('dashboard')}
+        />
+      )}
       {/* Changed onBack to go to 'dashboard' since 'approvals' is now entered from Dashboard */}
 
       {/* Bottom Nav - Hide on Approvals screen if desired, or keep sticky? Use case usually hides nav on full screen detail views or keeps it. Let's keep it but maybe it's cleaner to hide for 'Approvals' separate page feel. Let's keep it for now as it's a main nav. Actually image has back button so it might be a sub-screen. Let's hide bottom nav on approvals to match native feel or keep consistent? The image shows a full screen with back button. Let's hide bottom nav for Approvals for more real estate. */}
-      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && (
+      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && view !== 'purchases' && (
         <div style={{
           position: 'fixed',
           bottom: 0,

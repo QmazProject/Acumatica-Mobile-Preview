@@ -9,7 +9,8 @@ const Dashboard: React.FC<{
     onNavigate: (screen: string) => void;
     showApprovals: boolean;
     approvalsCount: number;
-}> = ({ onNavigate, showApprovals, approvalsCount }) => {
+    isPurchasesEnabled?: boolean;
+}> = ({ onNavigate, showApprovals, approvalsCount, isPurchasesEnabled }) => {
     return (
         <div className="dashboard-container">
             <div className="sticky-header">
@@ -66,7 +67,13 @@ const Dashboard: React.FC<{
                         <WorkspaceItem icon={<FolderKanban color="#ef4444" />} title="Projects" desc="Projects, Change Orders, Subcontracts, Progress Worksheets" />
                         <WorkspaceItem icon={<HardHat color="#ef4444" />} title="Project Management" desc="Daily Field Reports, Drawing Log, Submittals, Photo Logs, Requests For Information, Project Issues" />
                         <WorkspaceItem icon={<FileText color="#ef4444" />} title="Sales Orders" desc="Sales Orders" />
-                        <WorkspaceItem icon={<ShoppingCart color="#ef4444" />} title="Purchases" desc="Purchase Orders, Purchase Receipts, Request, Requisitions" />
+                        <WorkspaceItem 
+                            icon={<ShoppingCart color="#ef4444" />} 
+                            title="Purchases" 
+                            desc="Purchase Orders, Purchase Receipts, Request, Requisitions"
+                            onClick={isPurchasesEnabled ? () => onNavigate('purchases') : undefined}
+                            highlighted={isPurchasesEnabled}
+                        />
                         <WorkspaceItem icon={<Truck color="#ef4444" />} title="Inventory" desc="Receipts, Issues, Storage Summary, Inventory Transaction History" />
                         <WorkspaceItem icon={<ShieldCheck color="#ef4444" />} title="User Security" desc="Location Tracking Distance" />
                         <WorkspaceItem icon={<Folder color="#ef4444" />} title="Other" desc="Cash Transactions" />

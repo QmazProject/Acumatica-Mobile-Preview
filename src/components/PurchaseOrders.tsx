@@ -240,12 +240,12 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                     width: '56px',
                     height: '56px',
                     borderRadius: '50%',
-                    backgroundColor: '#10b981',
+                    backgroundColor: '#ef4444',
                     border: 'none',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
                     cursor: 'pointer',
                     zIndex: 1000
                 }}>

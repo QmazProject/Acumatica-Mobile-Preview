@@ -30,11 +30,24 @@
 - [x] Build and verify no TypeScript errors
 - [x] Push all changes to GitHub
 
-## Phase 5: Testing & Verification
+## Phase 5: Purchase Orders List Screen
+- [x] Create PurchaseOrders component with list view
+- [x] Add filter buttons (All, My Purchase Orders, ADC)
+- [x] Implement Sort By functionality
+- [x] Display purchase orders with details (ID, company, amount, date, status)
+- [x] Add search and menu icons in header
+- [x] Add floating action button (green plus)
+- [x] Highlight Purchase Orders button in Purchases screen
+- [x] Add navigation from Purchases to Purchase Orders
+- [x] Build successfully
+- [x] Push changes to GitHub
+
+## Phase 6: Testing & Verification
 - [x] Fix TypeScript errors
 - [x] Build PWA successfully
 - [x] Update favicon
-- [ ] Test Purchases feature flow in browser
+- [ ] Test complete Purchases flow in browser
+- [ ] Test Purchase Orders list and filters
 - [ ] Test PWA installation on mobile devices
 - [ ] Verify manifest
 - [ ] Test offline functionality

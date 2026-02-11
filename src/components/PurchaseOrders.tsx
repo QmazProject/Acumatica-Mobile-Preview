@@ -55,44 +55,52 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
     ];
 
     return (
-        <div className="dashboard-container" style={{ backgroundColor: '#fff' }}>
+        <div className="dashboard-container" style={{ backgroundColor: '#f5f5f5' }}>
             {/* Header */}
-            <div className="sticky-header" style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'space-between',
-                padding: '16px',
+            <div style={{ 
+                position: 'fixed',
+                top: 0,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '100%',
+                maxWidth: '480px',
+                zIndex: 100,
                 backgroundColor: '#fff',
                 borderBottom: '1px solid #e5e5e5'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <ArrowLeft 
-                        size={24} 
-                        color="#000" 
-                        onClick={onBack}
-                        style={{ cursor: 'pointer' }}
-                    />
-                    <h2 style={{ 
-                        fontSize: '20px', 
-                        fontWeight: '500',
-                        margin: 0
-                    }}>
-                        Purchase Orders
-                    </h2>
+                <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    padding: '16px'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <ArrowLeft 
+                            size={24} 
+                            color="#000" 
+                            onClick={onBack}
+                            style={{ cursor: 'pointer' }}
+                        />
+                        <h2 style={{ 
+                            fontSize: '20px', 
+                            fontWeight: '500',
+                            margin: 0
+                        }}>
+                            Purchase Orders
+                        </h2>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <Search size={24} color="#000" style={{ cursor: 'pointer' }} />
+                        <MoreVertical size={24} color="#000" style={{ cursor: 'pointer' }} />
+                    </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <Search size={24} color="#000" style={{ cursor: 'pointer' }} />
-                    <MoreVertical size={24} color="#000" style={{ cursor: 'pointer' }} />
-                </div>
-            </div>
 
-            <div className="dashboard-content" style={{ paddingTop: '70px', backgroundColor: '#f5f5f5' }}>
                 {/* Filter Buttons */}
                 <div style={{ 
                     display: 'flex', 
                     gap: '8px', 
                     padding: '16px',
-                    backgroundColor: '#fff',
+                    backgroundColor: '#f5f5f5',
                     overflowX: 'auto'
                 }}>
                     <button
@@ -155,7 +163,6 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                 <div style={{
                     padding: '12px 16px',
                     backgroundColor: '#fff',
-                    borderBottom: '1px solid #e5e5e5',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
@@ -165,93 +172,97 @@ const PurchaseOrders: React.FC<PurchaseOrdersProps> = ({ onBack }) => {
                     <span>Sort By</span>
                     <span style={{ fontSize: '16px' }}>☰</span>
                 </div>
-
-                {/* Purchase Orders List */}
-                <div style={{ backgroundColor: '#f5f5f5' }}>
-                    {purchaseOrders.map((order) => (
-                        <div
-                            key={order.id}
-                            style={{
-                                backgroundColor: '#fff',
-                                padding: '16px',
-                                marginBottom: '8px',
-                                cursor: 'pointer',
-                                borderBottom: '1px solid #e5e5e5'
-                            }}
-                        >
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start',
-                                marginBottom: '8px'
-                            }}>
-                                <h3 style={{
-                                    fontSize: '16px',
-                                    fontWeight: '600',
-                                    margin: 0,
-                                    color: '#000'
-                                }}>
-                                    {order.id}
-                                </h3>
-                                <span style={{
-                                    fontSize: '16px',
-                                    fontWeight: '500',
-                                    color: '#000'
-                                }}>
-                                    {order.amount}
-                                </span>
-                            </div>
-                            <p style={{
-                                fontSize: '14px',
-                                color: '#666',
-                                margin: '4px 0',
-                                lineHeight: 1.4
-                            }}>
-                                {order.company}
-                            </p>
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                marginTop: '8px'
-                            }}>
-                                <span style={{
-                                    fontSize: '13px',
-                                    color: '#999'
-                                }}>
-                                    {order.status}
-                                </span>
-                                <span style={{
-                                    fontSize: '13px',
-                                    color: '#666'
-                                }}>
-                                    {order.date}
-                                </span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Floating Action Button */}
-                <button style={{
-                    position: 'fixed',
-                    bottom: '24px',
-                    right: '24px',
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '50%',
-                    backgroundColor: '#ef4444',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
-                    cursor: 'pointer',
-                    zIndex: 1000
-                }}>
-                    <Plus size={28} color="#fff" />
-                </button>
             </div>
+
+            {/* Purchase Orders List */}
+            <div style={{ 
+                paddingTop: '200px',
+                backgroundColor: '#f5f5f5',
+                minHeight: '100vh'
+            }}>
+                {purchaseOrders.map((order) => (
+                    <div
+                        key={order.id}
+                        style={{
+                            backgroundColor: '#fff',
+                            padding: '16px',
+                            marginBottom: '8px',
+                            cursor: 'pointer',
+                            borderBottom: '1px solid #e5e5e5'
+                        }}
+                    >
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            marginBottom: '8px'
+                        }}>
+                            <h3 style={{
+                                fontSize: '16px',
+                                fontWeight: '600',
+                                margin: 0,
+                                color: '#000'
+                            }}>
+                                {order.id}
+                            </h3>
+                            <span style={{
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                color: '#000'
+                            }}>
+                                {order.amount}
+                            </span>
+                        </div>
+                        <p style={{
+                            fontSize: '14px',
+                            color: '#666',
+                            margin: '4px 0',
+                            lineHeight: 1.4
+                        }}>
+                            {order.company}
+                        </p>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginTop: '8px'
+                        }}>
+                            <span style={{
+                                fontSize: '13px',
+                                color: '#999'
+                            }}>
+                                {order.status}
+                            </span>
+                            <span style={{
+                                fontSize: '13px',
+                                color: '#666'
+                            }}>
+                                {order.date}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Floating Action Button */}
+            <button style={{
+                position: 'fixed',
+                bottom: '24px',
+                right: '24px',
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                backgroundColor: '#ef4444',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)',
+                cursor: 'pointer',
+                zIndex: 1000
+            }}>
+                <Plus size={28} color="#fff" />
+            </button>
         </div>
     );
 };

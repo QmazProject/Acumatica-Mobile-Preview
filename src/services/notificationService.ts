@@ -57,6 +57,10 @@ class NotificationService {
    * Check if notifications are supported and permission is granted
    */
   isSupported(): boolean {
+    // Update permission state from browser
+    if ('Notification' in window) {
+      this.permission = Notification.permission;
+    }
     return 'Notification' in window && this.permission === 'granted';
   }
 
@@ -64,6 +68,9 @@ class NotificationService {
    * Get current permission status
    */
   getPermission(): NotificationPermission {
+    if ('Notification' in window) {
+      this.permission = Notification.permission;
+    }
     return this.permission;
   }
 
@@ -71,34 +78,43 @@ class NotificationService {
    * Show a notification
    */
   async showNotification(options: NotificationOptions): Promise<void> {
+    // Update permission state before checking
+    if ('Notification' in window) {
+      this.permission = Notification.permission;
+    }
+    
     if (!this.isSupported()) {
-      console.warn('Notifications are not supported or permission not granted');
+      console.warn('Notifications are not supported or permission not granted. Current permission:', this.permission);
       return;
     }
 
+    console.log('Showing notification:', options.title);
+
     try {
+      const notificationOptions = {
+        body: options.body,
+        icon: options.icon || '/icons/android/android-launchericon-192-192.png',
+        badge: options.badge || '/icons/android/android-launchericon-96-96.png',
+        tag: options.tag,
+        data: options.data,
+        requireInteraction: false,
+        silent: false,
+        vibrate: [200, 100, 200],
+      };
+
       // Check if service worker is available for better notification support
       if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
         // Use service worker to show notification (better for PWA)
         const registration = await navigator.serviceWorker.ready;
-        await registration.showNotification(options.title, {
-          body: options.body,
-          icon: options.icon || '/icons/android/android-launchericon-192-192.png',
-          badge: options.badge || '/icons/android/android-launchericon-96-96.png',
-          tag: options.tag,
-          data: options.data,
-          requireInteraction: false,
-        } as any);
+        console.log('Using service worker notification');
+        await registration.showNotification(options.title, notificationOptions as any);
       } else {
         // Fallback to regular notification
-        new Notification(options.title, {
-          body: options.body,
-          icon: options.icon || '/icons/android/android-launchericon-192-192.png',
-          badge: options.badge || '/icons/android/android-launchericon-96-96.png',
-          tag: options.tag,
-          data: options.data,
-        } as any);
+        console.log('Using regular notification');
+        new Notification(options.title, notificationOptions as any);
       }
+      
+      console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error showing notification:', error);
     }

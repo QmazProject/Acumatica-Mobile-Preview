@@ -4,9 +4,10 @@ import './Dashboard.css';
 
 interface PurchasesProps {
     onBack: () => void;
+    onNavigateToPurchaseOrders: () => void;
 }
 
-const Purchases: React.FC<PurchasesProps> = ({ onBack }) => {
+const Purchases: React.FC<PurchasesProps> = ({ onBack, onNavigateToPurchaseOrders }) => {
     return (
         <div className="dashboard-container">
             {/* Header with back button */}
@@ -74,18 +75,22 @@ const Purchases: React.FC<PurchasesProps> = ({ onBack }) => {
                             alignItems: 'center',
                             gap: '12px'
                         }}>
-                            <button style={{
-                                flex: 1,
-                                padding: '16px',
-                                backgroundColor: '#fee2e2',
-                                border: 'none',
-                                borderRadius: '12px',
-                                fontSize: '16px',
-                                color: '#000',
-                                textAlign: 'left',
-                                cursor: 'pointer',
-                                fontWeight: '400'
-                            }}>
+                            <button 
+                                onClick={onNavigateToPurchaseOrders}
+                                style={{
+                                    flex: 1,
+                                    padding: '16px',
+                                    backgroundColor: '#fecaca',
+                                    border: '2px solid #ef4444',
+                                    borderRadius: '12px',
+                                    fontSize: '16px',
+                                    color: '#000',
+                                    textAlign: 'left',
+                                    cursor: 'pointer',
+                                    fontWeight: '500',
+                                    boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)'
+                                }}
+                            >
                                 Purchase Orders
                             </button>
                             <button style={{

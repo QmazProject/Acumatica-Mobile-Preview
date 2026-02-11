@@ -5,6 +5,7 @@ import Approvals from './components/ApprovalsComponent';
 import PurchaseOrderDetails from './components/PurchaseOrderDetails';
 import BillDetails from './components/BillDetails';
 import Purchases from './components/Purchases';
+import PurchaseOrders from './components/PurchaseOrders';
 import InstallPrompt from './components/InstallPrompt';
 import { Search, Star, User } from 'lucide-react';
 
@@ -29,7 +30,7 @@ const setStoredState = <T,>(key: string, value: T) => {
 };
 
 function App() {
-  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails' | 'purchases'>(() => 
+  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails' | 'purchases' | 'purchaseOrders'>(() => 
     getStoredState('appView', 'dashboard')
   );
   const [isApprovalsVisible, setIsApprovalsVisible] = useState(() => 
@@ -248,12 +249,18 @@ function App() {
       {view === 'purchases' && (
         <Purchases
           onBack={() => setView('dashboard')}
+          onNavigateToPurchaseOrders={() => setView('purchaseOrders')}
+        />
+      )}
+      {view === 'purchaseOrders' && (
+        <PurchaseOrders
+          onBack={() => setView('purchases')}
         />
       )}
       {/* Changed onBack to go to 'dashboard' since 'approvals' is now entered from Dashboard */}
 
       {/* Bottom Nav - Hide on Approvals screen if desired, or keep sticky? Use case usually hides nav on full screen detail views or keeps it. Let's keep it but maybe it's cleaner to hide for 'Approvals' separate page feel. Let's keep it for now as it's a main nav. Actually image has back button so it might be a sub-screen. Let's hide bottom nav on approvals to match native feel or keep consistent? The image shows a full screen with back button. Let's hide bottom nav for Approvals for more real estate. */}
-      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && view !== 'purchases' && (
+      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && view !== 'purchases' && view !== 'purchaseOrders' && (
         <div style={{
           position: 'fixed',
           bottom: 0,

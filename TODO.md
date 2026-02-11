@@ -21,11 +21,21 @@
 - [x] Add iOS splash screen meta tags
 - [x] Update favicon to use app icon
 
-## Phase 4: Testing & Verification
+## Phase 4: Additional Features
+- [x] Add "Enabled Purchases for PO" button to Functions
+- [x] Create Purchases component with red theme
+- [x] Add modal for enabling/disabling Purchases
+- [x] Implement red highlighting for Purchases workspace item
+- [x] Add navigation from Dashboard to Purchases screen
+- [x] Build and verify no TypeScript errors
+- [x] Push all changes to GitHub
+
+## Phase 5: Testing & Verification
 - [x] Fix TypeScript errors
 - [x] Build PWA successfully
 - [x] Update favicon
-- [ ] Test in browser
+- [ ] Test Purchases feature flow in browser
+- [ ] Test PWA installation on mobile devices
 - [ ] Verify manifest
 - [ ] Test offline functionality
-- [ ] Test install prompt on mobile devices
+- [ ] Test install prompt

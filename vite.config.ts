@@ -54,7 +54,9 @@ export default defineConfig({
         ],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
-        clientsClaim: true
+        clientsClaim: true,
+        // Import our custom service worker code
+        importScripts: ['/sw.js']
       },
       devOptions: {
         enabled: true,

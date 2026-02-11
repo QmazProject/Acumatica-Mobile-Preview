@@ -103,18 +103,35 @@ class NotificationService {
       };
 
       // Check if service worker is available for better notification support
-      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-        // Use service worker to show notification (better for PWA)
-        const registration = await navigator.serviceWorker.ready;
-        console.log('Using service worker notification');
-        await registration.showNotification(options.title, notificationOptions as any);
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.ready;
+          console.log('Service worker is ready, showing notification');
+          
+          // Try to show notification via service worker
+          await registration.showNotification(options.title, notificationOptions as any);
+          console.log('Notification sent successfully via service worker');
+          
+          // Also send a message to the service worker as backup
+          if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              type: 'SHOW_NOTIFICATION',
+              title: options.title,
+              options: notificationOptions
+            });
+          }
+        } catch (swError) {
+          console.warn('Service worker notification failed, falling back to regular notification:', swError);
+          // Fallback to regular notification
+          new Notification(options.title, notificationOptions as any);
+          console.log('Notification sent successfully via fallback');
+        }
       } else {
         // Fallback to regular notification
-        console.log('Using regular notification');
+        console.log('Using regular notification (no service worker)');
         new Notification(options.title, notificationOptions as any);
+        console.log('Notification sent successfully');
       }
-      
-      console.log('Notification sent successfully');
     } catch (error) {
       console.error('Error showing notification:', error);
     }

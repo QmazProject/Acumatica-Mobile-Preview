@@ -6,11 +6,26 @@ import PurchaseOrderDetails from './components/PurchaseOrderDetails';
 import BillDetails from './components/BillDetails';
 import Purchases from './components/Purchases';
 import PurchaseOrders from './components/PurchaseOrders';
+import PurchaseOrderDetailView from './components/PurchaseOrderDetailView';
 import InstallPrompt from './components/InstallPrompt';
 import { Search, Star, User } from 'lucide-react';
 import { notificationService } from './services/notificationService';
 
 type AttachmentFile = { name: string; size: string; date: string; type: string; previewUrl?: string };
+
+type PurchaseOrderData = {
+  id: string;
+  company: string;
+  amount: string;
+  date: string;
+  status: string;
+  type?: string;
+  promisedOn?: string;
+  description?: string;
+  location?: string;
+  owner?: string;
+  currency?: string;
+};
 
 // Helper functions for localStorage
 const getStoredState = <T,>(key: string, defaultValue: T): T => {
@@ -31,8 +46,11 @@ const setStoredState = <T,>(key: string, value: T) => {
 };
 
 function App() {
-  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails' | 'purchases' | 'purchaseOrders'>(() => 
+  const [view, setView] = useState<'dashboard' | 'functions' | 'approvals' | 'details' | 'billDetails' | 'prepaymentDetails' | 'purchases' | 'purchaseOrders' | 'purchaseOrderDetail'>(() => 
     getStoredState('appView', 'dashboard')
+  );
+  const [selectedPurchaseOrder, setSelectedPurchaseOrder] = useState<PurchaseOrderData | null>(() => 
+    getStoredState('selectedPurchaseOrder', null)
   );
   const [isApprovalsVisible, setIsApprovalsVisible] = useState(() => 
     getStoredState('isApprovalsVisible', false)
@@ -233,6 +251,10 @@ function App() {
     setStoredState('notificationPermissionGranted', notificationPermissionGranted);
   }, [notificationPermissionGranted]);
 
+  useEffect(() => {
+    setStoredState('selectedPurchaseOrder', selectedPurchaseOrder);
+  }, [selectedPurchaseOrder]);
+
   const getPendingApprovalsCount = () => {
     if (!isApprovalsVisible) return 0;
     
@@ -425,12 +447,22 @@ function App() {
       {view === 'purchaseOrders' && (
         <PurchaseOrders
           onBack={() => setView('purchases')}
+          onSelectPO={(po) => {
+            setSelectedPurchaseOrder(po);
+            setView('purchaseOrderDetail');
+          }}
+        />
+      )}
+      {view === 'purchaseOrderDetail' && selectedPurchaseOrder && (
+        <PurchaseOrderDetailView
+          onBack={() => setView('purchaseOrders')}
+          purchaseOrder={selectedPurchaseOrder}
         />
       )}
       {/* Changed onBack to go to 'dashboard' since 'approvals' is now entered from Dashboard */}
 
       {/* Bottom Nav - Hide on Approvals screen if desired, or keep sticky? Use case usually hides nav on full screen detail views or keeps it. Let's keep it but maybe it's cleaner to hide for 'Approvals' separate page feel. Let's keep it for now as it's a main nav. Actually image has back button so it might be a sub-screen. Let's hide bottom nav on approvals to match native feel or keep consistent? The image shows a full screen with back button. Let's hide bottom nav for Approvals for more real estate. */}
-      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && view !== 'purchases' && view !== 'purchaseOrders' && (
+      {view !== 'approvals' && view !== 'details' && view !== 'billDetails' && view !== 'prepaymentDetails' && view !== 'purchases' && view !== 'purchaseOrders' && view !== 'purchaseOrderDetail' && (
         <div style={{
           position: 'fixed',
           bottom: 0,
